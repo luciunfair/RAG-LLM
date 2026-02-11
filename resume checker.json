@@ -1,0 +1,455 @@
+{
+  "name": "resume checker",
+  "nodes": [
+    {
+      "parameters": {
+        "mode": "insert",
+        "pineconeIndex": {
+          "__rl": true,
+          "value": "resume",
+          "mode": "list"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStorePinecone",
+      "typeVersion": 1.3,
+      "position": [
+        -784,
+        16
+      ],
+      "id": "6938e284-3858-40fa-be1a-6ca3a5382e8c",
+      "name": "Pinecone Vector Store",
+      "credentials": {
+        "pineconeApi": {
+          "id": "kMKCv4qobk8sgUV7",
+          "name": "PineconeApi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "formTitle": "Upload Resume",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Resume (PDF)",
+              "fieldType": "file",
+              "multipleFiles": false,
+              "acceptFileTypes": ".pdf",
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "a1a8de65-30c6-40c0-a6be-bbe7d12cd296",
+      "name": "Resume Upload Form",
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.3,
+      "position": [
+        -1040,
+        16
+      ],
+      "webhookId": "2cdad21c-5bcd-4165-a077-ee81d7f4d661"
+    },
+    {
+      "parameters": {
+        "options": {
+          "dimensions": 512
+        }
+      },
+      "id": "2e55daa0-a8cc-4a05-8813-c2e6e905bce8",
+      "name": "OpenAI Embeddings",
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -816,
+        240
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "jOVbz7LU6RHGzcy9",
+          "name": "aval ai"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "2b178624-d98b-4ef0-ace7-91bc75687b61",
+      "name": "Recursive Text Splitter",
+      "type": "@n8n/n8n-nodes-langchain.textSplitterRecursiveCharacterTextSplitter",
+      "typeVersion": 1,
+      "position": [
+        -608,
+        448
+      ]
+    },
+    {
+      "parameters": {
+        "dataType": "binary",
+        "textSplittingMode": "custom",
+        "options": {}
+      },
+      "id": "ee1761b3-a77b-4a10-b36b-da6ee07e1619",
+      "name": "Document Loader",
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "typeVersion": 1.1,
+      "position": [
+        -688,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        -128,
+        32
+      ],
+      "id": "a4d39ce6-22b9-4dc5-aef2-b1afeae8ba6d",
+      "name": "When chat message received",
+      "webhookId": "e0b3e056-138d-4c8e-aa64-d59d812c157d"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        80,
+        32
+      ],
+      "id": "1e4fb751-9104-48bc-82b6-27c37a48c889",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": "openai/gpt-3.5-turbo",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        -64,
+        240
+      ],
+      "id": "f2fb7f3b-6900-4e3b-89dd-e54313a0c127",
+      "name": "OpenRouter Chat Model",
+      "credentials": {
+        "openRouterApi": {
+          "id": "gwryufumyiGymxle",
+          "name": "OpenRouter account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "contextWindowLength": 20
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        80,
+        240
+      ],
+      "id": "3db8abfb-b2d6-4b2b-b4b0-b631726d284d",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "mode": "retrieve-as-tool",
+        "toolDescription": "درباره ی رزومه  و رزومه ی علیرضا علی عسگری هری پرسیده شد بر اساس این جواب بده",
+        "pineconeIndex": {
+          "__rl": true,
+          "value": "resume",
+          "mode": "list",
+          "cachedResultName": "resume"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStorePinecone",
+      "typeVersion": 1.3,
+      "position": [
+        208,
+        208
+      ],
+      "id": "2c6f566e-7a28-48a6-9051-545ac1863e01",
+      "name": "Pinecone Vector Store1",
+      "credentials": {
+        "pineconeApi": {
+          "id": "kMKCv4qobk8sgUV7",
+          "name": "PineconeApi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {
+          "dimensions": 512
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        288,
+        416
+      ],
+      "id": "8a72b264-d3c4-4947-b9db-f64f371e46e6",
+      "name": "Embeddings OpenAI",
+      "credentials": {
+        "openAiApi": {
+          "id": "jOVbz7LU6RHGzcy9",
+          "name": "aval ai"
+        }
+      }
+    }
+  ],
+  "pinData": {
+    "Pinecone Vector Store": [
+      {
+        "json": {
+          "metadata": {
+            "source": "blob",
+            "blobType": "application/pdf",
+            "pdf": {
+              "version": "1.10.100",
+              "info": {
+                "PDFFormatVersion": "1.4",
+                "IsAcroFormPresent": false,
+                "IsXFAPresent": false,
+                "Title": "luciunfair.github.io/alireza_aliasakri/",
+                "Creator": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36 OPR/123.0.0.0",
+                "Producer": "Skia/PDF m139",
+                "CreationDate": "D:20251030075242+00'00'",
+                "ModDate": "D:20251030075242+00'00'"
+              },
+              "metadata": null,
+              "totalPages": 1
+            },
+            "loc": {
+              "lines": {
+                "from": 1,
+                "to": 25
+              }
+            }
+          },
+          "pageContent": "Alireza Aliaskari\nData scientist\nIsfahan -- Iran -- +98 9134751376 -- Ali_http_ali@yahoo.com\nCopyright © 2024 | Yankos\nEducation\nDetection of encrypted file fragments (used in data recovery, cybersecurity, and malware detection)\nDevelopment of state-of-the-art statistical and machine learning methods, such as NIST, HEDGE, EnCoD, and BLFCP\nProposed an automated machine-learning method based on selected features that performs well in challenging scenarios\nsuch as inter-dataset evaluation, zero-shot cases, and compressed files\nGPA: \nUniversity of Tehran, MSc in IT\n 2022 - Ongoing\n4/4\nTried to have Deep understanding of machine learning, mathematics, and statistics\nBasics of programming (python & sql) and networks\nGPA: \nUniversity of Isfahan, BSc in Computer Science\n 2016 - 2021\n3.23/4\nExperiences\nPython teacher\nAnswering and solving questions of students\nYasan Academy - part time\n 2022 - Ongoing\nData science"
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      },
+      {
+        "json": {
+          "metadata": {
+            "source": "blob",
+            "blobType": "application/pdf",
+            "pdf": {
+              "version": "1.10.100",
+              "info": {
+                "PDFFormatVersion": "1.4",
+                "IsAcroFormPresent": false,
+                "IsXFAPresent": false,
+                "Title": "luciunfair.github.io/alireza_aliasakri/",
+                "Creator": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36 OPR/123.0.0.0",
+                "Producer": "Skia/PDF m139",
+                "CreationDate": "D:20251030075242+00'00'",
+                "ModDate": "D:20251030075242+00'00'"
+              },
+              "metadata": null,
+              "totalPages": 1
+            },
+            "loc": {
+              "lines": {
+                "from": 26,
+                "to": 57
+              }
+            }
+          },
+          "pageContent": "Successfully deployed a YOLOv5-based system to detect and blur three symbols in videos with 88% accuracy in challenging\nscenarios\nThe project relied on a dataset entirely gathered and curated in-house\nShoroue Innovation Center - project base\n 2023 - 2025\nData science/data analyst intern\nPredicting the best-performing stocks in the market based on interest rates\nRasad - part time\n 2021 - 2022\nProjects\nEnCoD: implement this article from scratch\nBLFCP: implement this article from scratch\nBinary_logistic_regression: practical implementaion\nPytorch-based projects\nBased on FreeSimpleGui from python\nUse to Extract fragments from a whole dataset/each file, Extracting features in parallel, combine csv files\nEnc-fragment-extractor a Gui_app\nSkills\nPython\nMySQL\nMATLAB\nProgramming Languages & Query Languages\nScikit-Learn & SciPy\nNumPy & Pandas\nPyTorch, TensorFlow & Keras\nFLAML & AutoGluon\nMatplotlib\nPySimpleGUI\nFrameworks & Libraries\nCertificates\nNeural Networks and Deep Learning\nDeep Learning AI"
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      },
+      {
+        "json": {
+          "metadata": {
+            "source": "blob",
+            "blobType": "application/pdf",
+            "pdf": {
+              "version": "1.10.100",
+              "info": {
+                "PDFFormatVersion": "1.4",
+                "IsAcroFormPresent": false,
+                "IsXFAPresent": false,
+                "Title": "luciunfair.github.io/alireza_aliasakri/",
+                "Creator": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36 OPR/123.0.0.0",
+                "Producer": "Skia/PDF m139",
+                "CreationDate": "D:20251030075242+00'00'",
+                "ModDate": "D:20251030075242+00'00'"
+              },
+              "metadata": null,
+              "totalPages": 1
+            },
+            "loc": {
+              "lines": {
+                "from": 58,
+                "to": 89
+              }
+            }
+          },
+          "pageContent": "2023\nImproving Deep Neural Networks: Hyperparameter Tuning, Regularization and Optimization\nDeep Learning AI\n 2023\nPython Programming for Beginners\nMaktabkhooneh\n 2018\nAdvanced Python Programming\nMaktabkhooneh\n 2018\nDevelop an Online Shop using Wordpress\nMaktabkhooneh\n 2020\nLanguages\nPersian (‘Native’): ●●●●●\nEnglish: ●●●◐○\nPublications\nNot yet :)\nEducation\nEducation\nExperiences\nExperiences\nProjects\nProjects\nSkills\nSkills\nCertificates\nCertificates\nLanguages\nLanguages\nPublications\nPublications"
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ],
+    "Resume Upload Form": [
+      {
+        "json": {
+          "Resume (PDF)": {
+            "filename": "Alireza Aliaskari.pdf",
+            "mimetype": "application/pdf",
+            "size": 498930
+          },
+          "submittedAt": "2025-12-13T08:18:53.841-08:00",
+          "formMode": "test"
+        },
+        "binary": {
+          "Resume__PDF_": {
+            "mimeType": "application/pdf",
+            "fileType": "pdf",
+            "fileExtension": "pdf",
+            "data": "filesystem-v2",
+            "fileName": "Alireza Aliaskari.pdf",
+            "id": "filesystem-v2:workflows/eRyOaE6XJVjW0PYv/executions/temp/binary_data/3482fdf4-30f3-40c0-b2d2-76b7055b49ef",
+            "fileSize": "499 kB"
+          }
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Resume Upload Form": {
+      "main": [
+        [
+          {
+            "node": "Pinecone Vector Store",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Embeddings": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Pinecone Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Document Loader": {
+      "ai_document": [
+        [
+          {
+            "node": "Pinecone Vector Store",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Recursive Text Splitter": {
+      "ai_textSplitter": [
+        [
+          {
+            "node": "Document Loader",
+            "type": "ai_textSplitter",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenRouter Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pinecone Vector Store1": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Pinecone Vector Store1",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "595271be-8ced-43ec-a843-18733914b1ea",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "64790cec63fa59861e6e8a7b6e2d9875c97b0912035256b59a55cb8497bcef85"
+  },
+  "id": "eRyOaE6XJVjW0PYv",
+  "tags": []
+}
